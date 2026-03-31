@@ -1,9 +1,52 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Test</title>
-  </head>
-  <body>
-    <h1>Hello world</h1>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+    <nav id="menu">
+        <input id="filter" type="text" placeholder="Filter pages">
+        <div id="pages">
+            <p><a href="home.html" target="view">Home</a></p>
+            <p><a href="contact.html" target="view">Contact</a></p>
+            <p><a href="buzzwords.html" target="view">Buzzwords</a></p>
+            <p>Experience highlighs:</p>
+            <p><a href="ai-coding.html" target="view">AI Coding</a></p>
+        </div>
+    </nav>
+
+    <iframe id="view" name="view" src="home.html" title="Page view"></iframe>
+</div>
+<script>
+    const filter = document.getElementById('filter');
+    const entries = Array.from(document.querySelectorAll('#pages p'));
+    const links = Array.from(document.querySelectorAll('#pages a'));
+
+    // Filter
+    filter.addEventListener('input', function () {
+        const q = filter.value.toLowerCase();
+        entries.forEach(function (entry) {
+            const text = entry.textContent.toLowerCase();
+            entry.style.display = text.includes(q) ? '' : 'none';
+        });
+    });
+
+    // Active highlight
+    function setActive(linkEl) {
+        links.forEach(l => l.classList.remove('active'));
+        linkEl.classList.add('active');
+    }
+
+    links.forEach(link => {
+        link.addEventListener('click', function () {
+            setActive(link);
+        });
+    });
+
+    // Default (Home selected on load)
+    setActive(links[0]);
+</script>
+</body>
 </html>

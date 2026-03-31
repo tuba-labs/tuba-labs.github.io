@@ -1,0 +1,134 @@
+:root {
+    /* Colors */
+    --bg-main: #111;
+    --bg-panel: #151515;
+    --bg-input: #222;
+    --bg-hover: #222;
+    --bg-active: #333;
+
+    --text-main: #eee;
+    --text-dim: #ccc;
+    --text-highlight: #cfe6ff;
+
+    --border-main: #444;
+    --border-input: #555;
+
+    /* Layout */
+    --menu-width: 260px;
+    --padding: 10px;
+    --radius: 4px;
+}
+
+/* Base */
+body {
+    margin: 0;
+    font-family: monospace;
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+/* Global links (content pages) */
+a {
+    color: var(--bg-main);
+    background: var(--text-dim);
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* App layout */
+#app {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar menu */
+#menu {
+    width: var(--menu-width);
+    border-right: 1px solid var(--border-main);
+    padding: var(--padding);
+    box-sizing: border-box;
+    background: var(--bg-panel);
+    overflow-y: auto;
+}
+
+/* Filter input */
+#filter {
+    width: 100%;
+    padding: 5px;
+    margin: 0 0 10px 0;
+    box-sizing: border-box;
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border-input);
+    font: inherit;
+}
+
+/* Page list */
+#pages p {
+    margin: 0 0 6px 0;
+}
+
+/* Menu links (override global a) */
+#pages a {
+    color: var(--text-dim);
+    background: var(--bg-main);
+    text-decoration: none;
+    display: block;
+    padding: 4px 6px;
+}
+
+#pages a:hover {
+    background: var(--bg-hover);
+    color: var(--text-highlight);
+}
+
+#pages a.active {
+    background: var(--bg-active);
+    color: #fff;
+}
+
+/* Main view (iframe or content container) */
+#view {
+    flex: 1;
+    border: 0;
+    background: var(--bg-main);
+}
+
+/* Content pages (apply this class inside loaded pages, not globally) */
+.contentPage {
+    padding: 20px;
+    max-width: 600px;
+}
+
+/* Layout blocks */
+.intro {
+    display: flex;
+    gap: 30px;
+    max-width: 800px;
+}
+
+.left {
+    flex: 0 0 280px;
+}
+
+.right {
+    flex: 1;
+}
+
+/* Images */
+.profile {
+    width: 100%;
+    max-width: 264px;
+    float: left;
+    margin: 0 15px 10px 0;
+    border-radius: var(--radius);
+}
+
+/* Meta text */
+.meta {
+    line-height: 1.5;
+    color: var(--text-dim);
+}

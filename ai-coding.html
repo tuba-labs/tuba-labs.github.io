@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generative Coding</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="contentPage">
+
+<h1>AI Coding</h1>
+<small><a href="java-instructions">Download example javainstructions</a></small>
+<b>Before coding:</b>
+<p>
+    As a developer, I have often been lucky enough to work on greenfield projects.
+</p>
+<p>
+    In these cases, the first step is usually helping the customer or project owner understand what they actually want.
+    They typically have a clear idea of what the program should do, but not the cost or complexity behind each sentence
+    in a specification. AI helps here by suggesting appropriate abstractions that both I, as a developer, and the
+    product owner can understand and reason about.
+
+    For example I used AI to generate this page, but by the end nearly every line was changed at least once by my hands.
+    It still saved time.
+</p>
+
+<b>Research and Prototyping:</b>
+<p>
+    One of the biggest strengths of AI is how much it improves learning by doing. This year, I migrated the entire user
+    system for a large Norwegian government department from LDAP to Entra ID. I had limited experience with LDAP and
+    had never worked with Entra ID before, yet with AI assistance I was able to prototype solutions in minutes that
+    would normally take days.
+</p>
+<p>
+    I could also query common problems that thousands of users before me had already encountered and get concrete
+    suggestions on how to solve them. Using AI in this way significantly reduced the learning curve—likely by half or
+    more.
+</p>
+<p>
+    Since this experience, my typical process is to start with ChatGPT, then use Grok or Claude to critique and stress
+    test the result. When they stop finding issues, I review the solution myself and add my own critiques. In this way,
+    we move from a basic initial implementation—often full of typical AI mistakes—into something clean and robust.
+</p>
+
+<p>
+    Many experimental branches are simply deployed, learned from, and then discarded. It is not uncommon to throw away
+    thousands of lines of code after gaining a better understanding of the problem. AI makes it easier to avoid sunk
+    cost fallacy, since the initial investment in a prototype is low. This encourages discarding poor solutions and
+    rebuilding them properly.
+</p>
+<pre class="ascii">
+        +-----------------+            +-----------------+
+        |    ChatGPT      |            |      Grok       |
+        | "ORACLE PIVOT"  | <--------> |"Eww no, please!"|
+        +--------+--------+            +--------+--------+
+                 |                              |
+                / \                            / \
+               /   \                          /   \
+</pre>
+<b>Iterative design:</b>
+<p>
+    When using AI, it is important to work iteratively. Avoid asking it to solve large, complex problems all at once.
+    Instead, focus on a single concern at a time.
+</p>
+<p>
+    Once a solution is proposed, challenge it. Ask the AI to identify weaknesses, and have other models critique it as
+    well. When only trade-offs remain—and no clear faults—you can be reasonably confident that the concern is well
+    understood and addressed.
+</p>
+
+<b>It's not always greenfield:</b>
+<p>
+    I have also spent considerable time maintaining legacy systems. This is where AI can be especially useful. It can
+    quickly explain what thousands of lines of poorly written code are actually doing, suggest improvements, and often
+    pinpoint the source of bugs.
+</p>
+<p>
+    It can even generate tests for older systems where proper test coverage does not exist. While auto-generated tests
+    are not perfect, they are far better than having no tests at all, and can save both developers and testers a
+    significant amount of time.
+</p>
+
+</body>
+</html>

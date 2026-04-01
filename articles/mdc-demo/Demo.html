@@ -1,0 +1,102 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="contentPage">
+<a href="#" onclick="history.back(); return false;">← Back</a>
+<pre>
+import lombok.Cleanup;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
+
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
+@Slf4j
+public class MdcDemo {
+
+
+    public static final Random RANDOM = new Random();
+
+    static void main(String[] args) throws InterruptedException {
+        testMdc();
+
+        log.info("Husker vi å rydde opp alle?");
+
+    }
+
+    private static void testMdc() throws InterruptedException {
+        new Inner().log();
+        MDC.put("MDC", "er kjekt");
+        new Inner().log();
+        MDC.remove("MDC");
+        new Inner().log();
+
+        MDC.put("MDC", "er kjekt");
+        MDC.put("saksid", RANDOM.nextInt(100000) + "");
+        MDC.put("jobbId", UUID.randomUUID().toString());
+        new Inner().log();
+        MDC.remove("MDC");
+        MDC.remove("saksid");
+        MDC.remove("jobbId");
+
+        log.info("Du kan bruke autoclosable");
+        try (MDC.MDCCloseable mdcCloseable = MDC.putCloseable("MdcCloseable", "fint å rydde opp")) {
+            try (MDC.MDCCloseable mdcCloseable2 = MDC.putCloseable("saksid", "" + RANDOM.nextInt(100000))) {
+                try (MDC.MDCCloseable mdcCloseable3 = MDC.putCloseable("jobbId", UUID.randomUUID().toString())) {
+                    log.info("ewww så mange indenter?");
+                    new Inner().log();
+                }
+            }
+        }
+        log.info("Men det rydder i det minste opp");
+        new Inner().log();
+
+        log.info("Du kan slippe indent med @Cleanup fra lombok");
+        {
+            @Cleanup MDC.MDCCloseable mdcCloseable = MDC.putCloseable("MdcCloseable", "fint å rydde opp");
+            @Cleanup MDC.MDCCloseable mdcCloseable2 = MDC.putCloseable("saksid", "" + RANDOM.nextInt(100000));
+            @Cleanup MDC.MDCCloseable mdcCloseable3 = MDC.putCloseable("jobbId", UUID.randomUUID().toString());
+            log.info("Med cleanup lever det til blokken eller metoden avsluttes (scope exit)");
+            new Inner().log();
+        }
+        log.info("Det rydder opp uten identer, men er fortsatt støy med mange variabler og slikt.");
+
+        @Cleanup MdcUtils.QuietAutoCloseable ignore = MdcUtils.putMdcCloseable(Map.of(
+                "saksid", "" + RANDOM.nextInt(100000),
+                "jobbId", UUID.randomUUID().toString()));
+        new Inner().log();
+        log.info("Du kan bare bruke et map!");
+
+        final Thread threadOne = new Thread(() -> {
+            log.info("Men mdc lever på thread context. Så det følger ikke om du hopper i tråder.");
+            new Inner().log();
+        });
+        threadOne.start();
+        threadOne.join();
+
+        final Map<String, String> copyOfContextMap = MDC.getCopyOfContextMap();
+        final Thread threadTwo = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                @Cleanup MdcUtils.QuietAutoCloseable ignore = MdcUtils.putMdcCloseable(copyOfContextMap);
+                log.info("Da må du eventuelt manuelt kopiere.");
+                new Inner().log();
+            }
+        });
+        threadTwo.start();
+        threadTwo.join();
+    }
+
+    public static class Inner {
+
+
+        public void log() {
+            log.info("Enkelt logstatment");
+        }
+    }
+}
+</pre>
+</body>
+</html>

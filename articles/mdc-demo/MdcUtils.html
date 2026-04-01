@@ -1,0 +1,52 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="contentPage">
+<a href="#" onclick="history.back(); return false;">← Back</a>
+<pre>
+import lombok.NonNull;
+import org.slf4j.MDC;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public final class MdcUtils {
+    private static final QuietAutoCloseable NO_OP = () -> {};
+    private MdcUtils() {
+        // utility
+    }
+
+    @FunctionalInterface
+    public interface QuietAutoCloseable extends AutoCloseable {
+        @Override
+        void close();
+    }
+
+    public static QuietAutoCloseable putMdcCloseable(@NonNull Map<String, String> values) {
+        if (values == null) {
+            return NO_OP;
+        }
+        final List<MDC.MDCCloseable> closeables = new ArrayList<>(values.size());
+
+        values.forEach((key, value) -> {
+            if (value != null) {
+                closeables.add(MDC.putCloseable(key, value));
+            }
+        });
+
+        return () -> {
+            for (int i = closeables.size() - 1; i >= 0; i--) {
+                try {
+                    closeables.get(i).close();
+                } catch (Exception ignored) {
+                    // explicitly swallowed
+                }
+            }
+        };
+    }
+}
+    </pre>
+</body>
+</html>

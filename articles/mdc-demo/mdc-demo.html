@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Technical Lunch: MDC</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="contentPage">
+
+<h1>Team Technical Lunch: MDC</h1>
+<small>2026-03-26</small><br/>
+<br/>
+<small><b>Attachments:</b></small></br>
+<small><a href="Demo.html">Demo.java</a></small><br/>
+<small><a href="MdcUtils.html">MdcUtils.java</a></small><br/>
+<p>
+    In our team we have something called <b>technical lunches</b>.
+</p>
+
+<p>
+    It’s a low-key format where someone presents a small topic, pattern, or tool they’ve been working with.
+    Nothing fancy, just sharing knowledge across the team.
+</p>
+
+<p>
+    I’m fairly new in the team, so this was a good opportunity to both learn something properly and
+    contribute a bit early on.
+</p>
+
+<h2>Topic: MDC (Mapped Diagnostic Context)</h2>
+
+<p>
+    The topic I picked was <b>MDC</b> — a simple but very useful feature in logging frameworks like SLF4J that I had
+    been annoyed at beeing almost completly abscent from all our code bases.
+</p>
+
+<p>
+    It lets you attach contextual information to your logs, for example:
+</p>
+
+<ul>
+    <li>saksid</li>
+    <li>jobbId</li>
+    <li>request identifiers</li>
+</ul>
+
+<p>
+    This makes logs much easier to understand and filter, especially in distributed systems.
+</p>
+
+<h2>The Problem</h2>
+
+<p>
+    MDC is stored per thread, which means:
+</p>
+
+<ul>
+    <li>You have to remember to clean it up</li>
+    <li>It does not automatically follow when switching threads</li>
+</ul>
+
+<p>
+    Forgetting cleanup can lead to confusing logs where context "leaks" between operations.
+</p>
+
+<h2>Approaches</h2>
+
+<p>
+    I walked through a few different ways of handling MDC:
+</p>
+
+<ul>
+    <li>Manual <code>MDC.put()</code> / <code>MDC.remove()</code></li>
+    <li><code>MDC.putCloseable()</code> with try-with-resources</li>
+    <li><code>@Cleanup</code> from Lombok to reduce indentation</li>
+    <li>A small utility using a <code>Map</code> to set multiple values at once</li>
+</ul>
+
+<p>
+    The goal was to make usage safer and less noisy.
+</p>
+
+<h2>Threads</h2>
+
+<p>
+    One important detail is that MDC is <b>thread-local</b>.
+</p>
+
+<p>
+    If you start a new thread, the context is not there unless you copy it manually.
+</p>
+
+<p>
+    That’s easy to forget, and can explain why logs suddenly lose context.
+</p>
+
+<h2>Takeaway</h2>
+
+<p>
+    MDC is simple, but small mistakes can lead to subtle bugs in logging.
+</p>
+
+<p>
+    A bit of structure around how it’s used goes a long way:
+</p>
+
+<ul>
+    <li>Always clean up</li>
+    <li>Prefer scoped usage (AutoCloseable)</li>
+    <li>Be aware of thread boundaries</li>
+</ul>
+
+</body>
+</html>

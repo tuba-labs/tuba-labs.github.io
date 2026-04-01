@@ -1,53 +1,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Buzzwords</title>
     <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="contentPage">
+
 <h1>Buzzwords</h1>
+
 <p>
-    Here are some Buzzwords that a recruiter might be looking for that i can fulfill:
+    Here are technologies and areas I work with, grouped in a way that reflects how projects and roles are typically described:
 </p>
+
+<input id="buzzFilter" type="text" placeholder="Filter skills...">
+
+<pre class="ascii">
+---[ SKILLS OVERVIEW ]---------------------------------
+</pre>
 
 <div class="buzzwords">
 
-    <p><strong>Languages</strong><br>
-        Java, SQL, Kotlin</p>
+    <div class="buzzword">
+        <p><strong>AI & Modern Development</strong></p>
+        <ul>
+            <li>AI-assisted development</li>
+            <li>LLMs</li>
+            <li>AI copilots</li>
+            <li>Prompt-driven development (ChatGPT, Claude, Grok)</li>
+        </ul>
+    </div>
 
-    <p><strong>AI & Development</strong><br>
-        AI-assisted development, LLMs, AI copilots, Prompt-driven development (ChatGPT, Claude, Grok)
+    <div class="buzzword">
+        <p><strong>Core Competence</strong></p>
+        <ul>
+            <li>Backend development</li>
+            <li>System design</li>
+            <li>Distributed systems</li>
+            <li>Integration</li>
+            <li>Event-driven architecture</li>
+            <li>Scalable systems</li>
+        </ul>
+    </div>
 
-    <p><strong>Frameworks & Testing</strong><br>
-        Spring, Spring Boot, JUnit, Mockito</p>
+    <div class="buzzword">
+        <p><strong>Languages</strong></p>
+        <ul>
+            <li>Java</li>
+            <li>Kotlin</li>
+            <li>SQL</li>
+        </ul>
+    </div>
 
-    <p><strong>Architecture & Design</strong><br>
-        Microservices, Distributed systems, Event-driven architecture, System design, Backend development, Integration,
-        Reactive programming, SOLID, Secure programming</p>
+    <div class="buzzword">
+        <p><strong>Frameworks & APIs</strong></p>
+        <ul>
+            <li>Spring</li>
+            <li>Spring Boot</li>
+            <li>REST APIs</li>
+            <li>HTTP</li>
+            <li>JSON</li>
+            <li>XML</li>
+            <li>OpenAPI / Swagger</li>
+            <li>SOAP</li>
+            <li>SSE</li>
+            <li>JWT</li>
+            <li>OAuth2</li>
+        </ul>
+    </div>
 
-    <p><strong>APIs & Data Formats</strong><br>
-        REST APIs, HTTP, JSON, XML, OpenAPI, Swagger, Web services, SOAP, SSE, JWT, OAuth2</p>
+    <div class="buzzword">
+        <p><strong>Cloud & Infrastructure</strong></p>
+        <ul>
+            <li>Docker</li>
+            <li>Kubernetes</li>
+            <li>OpenShift</li>
+            <li>GCP</li>
+            <li>Microsoft Azure</li>
+            <li>NAIS</li>
+            <li>Linux</li>
+            <li>Cloud-native systems</li>
+        </ul>
+    </div>
 
-    <p><strong>Messaging & Streaming</strong><br>
-        Kafka, Kafka Streams, Avro, ActiveMQ, Message queues, Data pipelines, Schema registry</p>
+    <div class="buzzword">
+        <p><strong>Data & Event Processing</strong></p>
+        <ul>
+            <li>Kafka</li>
+            <li>Kafka Streams</li>
+            <li>ActiveMQ</li>
+            <li>Avro</li>
+            <li>Data pipelines</li>
+            <li>Schema registry</li>
+        </ul>
+    </div>
 
-    <p><strong>Databases & Tooling</strong><br>
-        PostgreSQL, MySQL, Oracle, H2, Hibernate, JPA, Liquibase, Flyway</p>
+    <div class="buzzword">
+        <p><strong>Databases & Persistence</strong></p>
+        <ul>
+            <li>PostgreSQL</li>
+            <li>MySQL</li>
+            <li>Oracle</li>
+            <li>H2</li>
+            <li>Hibernate</li>
+            <li>JPA</li>
+            <li>Liquibase</li>
+            <li>Flyway</li>
+        </ul>
+    </div>
 
-    <p><strong>Cloud & Infrastructure</strong><br>
-        Docker, Kubernetes, OpenShift, NAIS, GCP, Microsoft Azure, Cloud-native, Containerization, Linux</p>
+    <div class="buzzword">
+        <p><strong>Testing & Quality</strong></p>
+        <ul>
+            <li>JUnit</li>
+            <li>Mockito</li>
+            <li>Test automation</li>
+            <li>TDD</li>
+            <li>Clean Code</li>
+            <li>Defensive programming</li>
+        </ul>
+    </div>
 
-    <p><strong>Platforms & Integrations</strong><br>
-        Altinn, ID-porten, E2B, Netbeans, Apache Camel</p>
+    <div class="buzzword">
+        <p><strong>DevOps & Tooling</strong></p>
+        <ul>
+            <li>Git</li>
+            <li>GitHub</li>
+            <li>GitLab</li>
+            <li>Jenkins</li>
+            <li>Maven</li>
+            <li>CI/CD pipelines</li>
+            <li>SonarQube</li>
+            <li>Postman</li>
+        </ul>
+    </div>
 
-    <p><strong>CI/CD & Tooling</strong><br>
-        Git, GitHub, GitLab, Jenkins, Maven, SonarQube, Postman</p>
+    <div class="buzzword">
+        <p><strong>Monitoring & Reliability</strong></p>
+        <ul>
+            <li>Logging</li>
+            <li>Monitoring</li>
+            <li>Prometheus</li>
+            <li>Grafana</li>
+            <li>ELK stack</li>
+            <li>Splunk</li>
+            <li>Graylog</li>
+        </ul>
+    </div>
 
-    <p><strong>Observability & Operations</strong><br>
-        Logging, Monitoring, Observability, Prometheus, Grafana, Splunk, ELK, Graylog</p>
-
-    <p><strong>Methodologies</strong><br>
-        Agile, Scrum, TDD, DevOps, Test automation, Clean Code, Defensive programming, Fail fast</p>
+    <div class="buzzword">
+        <p><strong>Ways of Working</strong></p>
+        <ul>
+            <li>Agile</li>
+            <li>Scrum</li>
+            <li>DevOps culture</li>
+            <li>Fail fast</li>
+        </ul>
+    </div>
 
 </div>
+
+<script>
+    const filter = document.getElementById('buzzFilter');
+    const items = Array.from(document.querySelectorAll('.buzzword'));
+
+    filter.addEventListener('input', function () {
+        const q = filter.value.toLowerCase();
+
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(q) ? '' : 'none';
+        });
+    });
+</script>
+
 </body>
+</html>

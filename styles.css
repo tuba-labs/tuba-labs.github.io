@@ -27,7 +27,7 @@ body {
     color: var(--text-main);
 }
 
-/* Global links (content pages) */
+/* Global links */
 a {
     color: var(--bg-main);
     background: var(--text-dim);
@@ -36,6 +36,32 @@ a {
 a:hover {
     color: #fff;
     text-decoration: underline;
+}
+
+/* Inline links inside content */
+.contentPage a {
+    background: none;
+    color: var(--text-highlight);
+}
+
+/* External links */
+a[href^="http"]::after {
+    content: " ↗";
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+/* Download links */
+a[href$=".pdf"]::after {
+    content: " 📄";
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+a[href$=".txt"]::after {
+    content: " 📝";
+    font-size: 0.8em;
+    opacity: 0.7;
 }
 
 /* App layout */
@@ -71,7 +97,7 @@ a:hover {
     margin: 0 0 6px 0;
 }
 
-/* Menu links (override global a) */
+/* Menu links */
 #pages a {
     color: var(--text-dim);
     background: var(--bg-main);
@@ -90,14 +116,14 @@ a:hover {
     color: #fff;
 }
 
-/* Main view (iframe or content container) */
+/* Main view */
 #view {
     flex: 1;
     border: 0;
     background: var(--bg-main);
 }
 
-/* Content pages (apply this class inside loaded pages, not globally) */
+/* Content pages */
 .contentPage {
     padding: 20px;
     max-width: 600px;
@@ -131,4 +157,58 @@ a:hover {
 .meta {
     line-height: 1.5;
     color: var(--text-dim);
+}
+
+/* ASCII blocks */
+pre {
+    overflow-x: auto;
+    white-space: pre;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    pre {
+        font-size: 0.85em;
+    }
+}
+@media (max-width: 700px) {
+
+    #app {
+        flex-direction: column;
+    }
+
+    #menu {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-main);
+    }
+
+    #pages a {
+        padding: 8px;
+    }
+
+    #filter {
+        padding: 8px;
+    }
+
+    #view {
+        width: 100%;
+        height: calc(100vh - 160px);
+    }
+
+    .intro {
+        flex-direction: column;
+    }
+
+    .left,
+    .right {
+        flex: none;
+        width: 100%;
+    }
+
+    .profile {
+        float: none;
+        margin: 10px 0;
+        max-width: 200px;
+    }
 }

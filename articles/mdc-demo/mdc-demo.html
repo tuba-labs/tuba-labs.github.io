@@ -12,6 +12,7 @@
 <small><b>Attachments:</b></small></br>
 <small><a href="Demo.html">Demo.java</a></small><br/>
 <small><a href="MdcUtils.html">MdcUtils.java</a></small><br/>
+
 <p>
     In our team we have something called <b>technical lunches</b>.
 </p>
@@ -29,38 +30,68 @@
 <h2>Topic: MDC (Mapped Diagnostic Context)</h2>
 
 <p>
-    The topic I picked was <b>MDC</b> — a simple but very useful feature in logging frameworks like SLF4J that I had
-    been annoyed at beeing almost completly abscent from all our code bases.
+    The topic I picked was <b>MDC</b> — a simple but very useful feature in logging frameworks like SLF4J.
 </p>
 
 <p>
-    It lets you attach contextual information to your logs, for example:
+    It lets you attach contextual information to your logs.
 </p>
 
-<ul>
-    <li>saksid</li>
-    <li>jobbId</li>
-    <li>request identifiers</li>
-</ul>
+<pre>
+Thread-1
++----------------------+
+| MDC                  |
+|----------------------|
+| saksid = 123         |
+| jobbId = abc-xyz     |
++----------------------+
 
-<p>
-    This makes logs much easier to understand and filter, especially in distributed systems.
-</p>
+log.info("hello")  --> [saksid=123, jobbId=abc-xyz]
+</pre>
 
 <h2>The Problem</h2>
 
 <p>
-    MDC is stored per thread, which means:
+    MDC is stored per thread.
 </p>
 
-<ul>
-    <li>You have to remember to clean it up</li>
-    <li>It does not automatically follow when switching threads</li>
-</ul>
+<pre>
+Thread-1                     Thread-2
++-----------+               +-----------+
+| MDC       |               | MDC       |
+|-----------|               |-----------|
+| saksid=1  |               |  (empty)  |
++-----------+               +-----------+
+
+log()                      log()
+--> has context            --> no context
+</pre>
 
 <p>
-    Forgetting cleanup can lead to confusing logs where context "leaks" between operations.
+    It does not automatically follow when switching threads.
 </p>
+
+<h2>Cleanup Matters</h2>
+
+<p>
+    If you forget to clean up, context can leak:
+</p>
+
+<pre>
+Request A sets MDC:
+
++----------------------+
+| saksid = 123         |
++----------------------+
+
+... forgot cleanup ...
+
+Request B:
+
+log.info("oops")
+
+--> still logs with saksid=123
+</pre>
 
 <h2>Approaches</h2>
 
@@ -71,43 +102,62 @@
 <ul>
     <li>Manual <code>MDC.put()</code> / <code>MDC.remove()</code></li>
     <li><code>MDC.putCloseable()</code> with try-with-resources</li>
-    <li><code>@Cleanup</code> from Lombok to reduce indentation</li>
-    <li>A small utility using a <code>Map</code> to set multiple values at once</li>
+    <li><code>@Cleanup</code> from Lombok</li>
+    <li>A utility that sets multiple values from a <code>Map</code></li>
 </ul>
 
-<p>
-    The goal was to make usage safer and less noisy.
-</p>
+<pre>
+try (MDC scope)
++----------------------+
+| saksid = 42          |
+| jobbId = def         |
++----------------------+
 
-<h2>Threads</h2>
+log()
 
-<p>
-    One important detail is that MDC is <b>thread-local</b>.
-</p>
-
-<p>
-    If you start a new thread, the context is not there unless you copy it manually.
-</p>
+(scope exits → MDC cleared)
+</pre>
 
 <p>
-    That’s easy to forget, and can explain why logs suddenly lose context.
+    The goal is to make usage safe and predictable without too much boilerplate.
 </p>
+
+<h2>Threads (again)</h2>
+
+<p>
+    If you want MDC in another thread, you must copy it:
+</p>
+
+<pre>
+Map copy = MDC.getCopy()
+
+Thread-2:
+MDC.set(copy)
+
++----------------------+
+| saksid = 42          |
+| jobbId = def         |
++----------------------+
+</pre>
 
 <h2>Takeaway</h2>
 
-<p>
-    MDC is simple, but small mistakes can lead to subtle bugs in logging.
-</p>
-
-<p>
-    A bit of structure around how it’s used goes a long way:
-</p>
-
 <ul>
+    <li>MDC is thread-local</li>
     <li>Always clean up</li>
-    <li>Prefer scoped usage (AutoCloseable)</li>
-    <li>Be aware of thread boundaries</li>
+    <li>Prefer scoped usage</li>
+    <li>Copy context when crossing threads</li>
 </ul>
+
+<pre>
+Good:
+
+[request] → set MDC → log → clear MDC
+
+Bad:
+
+[request] → set MDC → log → (forget) → chaos
+</pre>
 
 </body>
 </html>

@@ -62,12 +62,21 @@ public class MdcDemo {
             new Inner().log();
         }
         log.info("Det rydder opp uten identer, men er fortsatt støy med mange variabler og slikt.");
+        log.info("Eller via try med mange variabler.")
+        try (
+        MDC.MDCCloseable m1 = MDC.putCloseable("MdcCloseable", "fint å rydde opp");
+        MDC.MDCCloseable m2 = MDC.putCloseable("saksid", "" + RANDOM.nextInt(100000));
+        MDC.MDCCloseable m3 = MDC.putCloseable("jobbId", UUID.randomUUID().toString())
+        ) {
+            log.info("ewww så mange indenter?");
+            new Inner().log();
+        }
 
         @Cleanup MdcUtils.QuietAutoCloseable ignore = MdcUtils.putMdcCloseable(Map.of(
                 "saksid", "" + RANDOM.nextInt(100000),
                 "jobbId", UUID.randomUUID().toString()));
         new Inner().log();
-        log.info("Du kan bare bruke et map!");
+        log.info("Alternativt kan bare bruke et map!");
 
         final Thread threadOne = new Thread(() -> {
             log.info("Men mdc lever på thread context. Så det følger ikke om du hopper i tråder.");

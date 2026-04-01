@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js"></script>
+    <link rel="stylesheet" href="/pre.css">
+</head>
+<body class="prePage">
+
+<pre>
+oks-lreg-populator:
+  java-jobs:
+    POSTNR:
+      config-id: POSTNR
+      executor-bean-name: PostnrImport
+      target-table: LBR_POSTNR
+
+      columns:
+        - name: POSTNR
+          type: VARCHAR2(16)
+          nullable: false
+          primaryKey: true
+
+        - name: POSTSTED
+          type: VARCHAR2(140)
+  </pre>
+</body>
+</html>

@@ -1,15 +1,19 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Team Technical Lunch: MDC</title>
     <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js"></script>
+    <link rel="stylesheet" href="/content.css">
+
+    <title>Team Technical Lunch: MDC</title>
 </head>
 <body class="contentPage">
 
 <h1>Team Technical Lunch: MDC</h1>
 <small>2026-03-26</small><br/>
 <br/>
-<small><b>Attachments:</b></small></br>
+<small><b>Attachments:</b></small><br/>
 <small><a href="Demo.html">Demo.java</a></small><br/>
 <small><a href="MdcUtils.html">MdcUtils.java</a></small><br/>
 
@@ -37,7 +41,7 @@
     It lets you attach contextual information to your logs.
 </p>
 
-<pre>
+<pre class="ascii">
 Thread-1
 +----------------------+
 | MDC                  |
@@ -55,7 +59,7 @@ log.info("hello")  --> [saksid=123, jobbId=abc-xyz]
     MDC is stored per thread.
 </p>
 
-<pre>
+<pre class="ascii">
 Thread-1                     Thread-2
 +-----------+               +-----------+
 | MDC       |               | MDC       |
@@ -77,7 +81,7 @@ log()                      log()
     If you forget to clean up, context can leak:
 </p>
 
-<pre>
+<pre class="ascii">
 Request A sets MDC:
 
 +----------------------+
@@ -106,7 +110,7 @@ log.info("oops")
     <li>A utility that sets multiple values from a <code>Map</code></li>
 </ul>
 
-<pre>
+<pre class="ascii">
 try (MDC scope)
 +----------------------+
 | saksid = 42          |
@@ -128,7 +132,7 @@ log()
     If you want MDC in another thread, you must copy it:
 </p>
 
-<pre>
+<pre class="ascii">
 Map copy = MDC.getCopy()
 
 Thread-2:
@@ -149,15 +153,6 @@ MDC.set(copy)
     <li>Copy context when crossing threads</li>
 </ul>
 
-<pre>
-Good:
-
-[request] → set MDC → log → clear MDC
-
-Bad:
-
-[request] → set MDC → log → (forget) → chaos
-</pre>
 
 </body>
 </html>

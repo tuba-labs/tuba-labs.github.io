@@ -1,0 +1,14 @@
+.contentPage {
+    padding: 20px;
+    max-width: 800px;
+}
+
+.meta {
+    line-height: 1.5;
+    color: var(--text-dim);
+}
+
+pre {
+    overflow-x: auto;
+    white-space: pre;
+}

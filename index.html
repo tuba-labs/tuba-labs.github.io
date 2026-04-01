@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
     <title>Website</title>
-    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -10,21 +11,58 @@
     <nav id="menu">
         <input id="filter" type="text" placeholder="Filter pages">
         <div id="pages">
-            <p><a href="home/home.html" target="view">Home</a></p>
-            <p><a href="contact/contact.html" target="view">Contact</a></p>
-            <p><a href="buzzwords/buzzwords.html" target="view">Buzzwords</a></p>
-            <p>Articles:</p>
-            <p><a href="articles/ai-coding/ai-coding.html" target="view">AI Coding</a></p>
-            <p><a href="articles/mdc-demo/mdc-demo.html" target="view">MDC Demo</a></p>
+            <p><a href="#home">Home</a></p>
+            <p><a href="#contact">Contact</a></p>
+            <p><a href="#buzzwords">Buzzwords</a></p>
+            <p>Ai assistance articles:</p>
+            <p><a href="#bigquery">BigQuery ETL Migration</a></p>
+            <p><a href="#ai-coding">LDAP to Entra ID Migration</a></p>
+            <p>General Articles:</p>
+            <p><a href="#mdc-demo">MDC Demo</a></p>
         </div>
     </nav>
 
     <iframe id="view" name="view" src="home/home.html" title="Page view"></iframe>
 </div>
+
 <script>
     const filter = document.getElementById('filter');
     const entries = Array.from(document.querySelectorAll('#pages p'));
     const links = Array.from(document.querySelectorAll('#pages a'));
+    const iframe = document.getElementById('view');
+
+    const routes = {
+        "home": "home/home.html",
+        "contact": "contact/contact.html",
+        "buzzwords": "buzzwords/buzzwords.html",
+        "bigquery": "articles/ai/bigquery-etl/bigquery-etl.html",
+        "ai-coding": "articles/ai/ldap-entraid-migration/ldap-entraid-migration.html",
+        "mdc-demo": "articles/general/mdc-demo/mdc-demo.html"
+    };
+
+    function loadFromHash() {
+        const hash = location.hash.replace('#', '') || "home";
+        const src = routes[hash] || routes["home"];
+        iframe.src = src;
+
+        links.forEach(l => l.classList.remove('active'));
+        const active = links.find(l => l.getAttribute('href') === '#' + hash);
+        if (active) active.classList.add('active');
+    }
+
+    // Handle clicks → update URL
+    links.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            location.hash = link.getAttribute('href');
+        });
+    });
+
+    // Handle browser navigation
+    window.addEventListener('hashchange', loadFromHash);
+
+    // Initial load
+    loadFromHash();
 
     // Filter
     filter.addEventListener('input', function () {
@@ -34,21 +72,6 @@
             entry.style.display = text.includes(q) ? '' : 'none';
         });
     });
-
-    // Active highlight
-    function setActive(linkEl) {
-        links.forEach(l => l.classList.remove('active'));
-        linkEl.classList.add('active');
-    }
-
-    links.forEach(link => {
-        link.addEventListener('click', function () {
-            setActive(link);
-        });
-    });
-
-    // Default (Home selected on load)
-    setActive(links[0]);
 </script>
 </body>
 </html>

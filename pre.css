@@ -1,0 +1,8 @@
+.prePage {
+    padding: 20px;
+}
+
+.prePage pre {
+    overflow-x: auto;
+    white-space: pre;
+}

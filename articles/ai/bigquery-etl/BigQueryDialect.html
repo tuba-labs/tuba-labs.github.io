@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js"></script>
+    <link rel="stylesheet" href="/pre.css">
+
+</head>
+
+<body class="prePage">
+
+<pre>
+@Component
+@Slf4j
+public class BigQueryDialect implements SqlDialect {
+
+    @Override
+    public boolean supports(Databases.DbProperties driver) {
+        return driver != null && driver.driverClassName().toLowerCase().contains("bigquery");
+    }
+
+    @Override
+    public String limitClause(int limit) {
+        return "LIMIT " + limit;
+    }
+
+    @Override
+    public String qualify(String schema, String table) {
+        if (schema == null || schema.isBlank()) {
+            return "`%s`".formatted(table);
+        }
+        return "`%s.%s`".formatted(schema, table);
+    }
+
+    @Override
+    public void refreshMaterializedView(String viewName, DbHolder dbHolder) {
+        throw new UnsupportedOperationException("Refreshing materialized views is not supported by BigQuery");
+    }
+
+    public static String cursorValueToLiteral(Object value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Cursor value cannot be null");
+        }
+        if (value instanceof java.math.BigDecimal bd) {
+            return bd.toPlainString();
+        }
+        if (value instanceof Number) {
+            return value.toString();
+        }
+        if (value instanceof Boolean b) {
+            return b ? "TRUE" : "FALSE";
+        }
+        if (!(value instanceof String)) {
+            //fall back, this is not guaranteed to work
+            log.warn("Unkown cursor value. guessing at 'toString()' working for {}", value);
+        }
+        return "'%s'".formatted(value.toString().replace("'", "''"));
+    }
+    </pre>
+
+
+
+</body>
+</html>

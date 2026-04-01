@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/content.css">
+    <script src="/app.js"></script>
+
+    <title>Generative Coding</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="contentPage">
+
+<h1>AI Coding</h1>
+<small>2026-04-01</small><br/>
+<br/>
+<small><b>Attachments:</b></small><br/>
+<small><a href="Java-instructions.html">Java instructions</a></small><br/>
+<small><a href="Lbr_postnr.html">Lbr_postnr</a></small><br/>
+<small><a href="BigQueryDialect.html">BigQueryDialect</a></small><br/>
+
+<p>
+    Migrated a legacy Oracle-dependent system to <a href="https://nais.io/" target="_blank">NAIS</a>
+    (<a href="https://cloud.google.com/" target="_blank">GCP</a>) by replacing directschema access with an ETL
+    pipeline (BigQuery + Oracle).
+
+    Identified required data (13 tables), coordinated cross-team, and delivered
+    a production-ready solution in two weeks.
+
+    AI was used extensively for prototyping and exploration, but all final
+    design decisions were validated and adjusted manually.
+</p>
+<pre class="ascii">
+   [ON-PREM ORACLE] ========> [NAIS / GCP]
+        (legacy)                 (target)
+           |                        |
+           |   broken patterns      |
+           V                        v
+     direct schema access          ???
+</pre>
+
+<h2>Migrating on prem to GCP</h2>
+<p>
+    My team is currently in the process of migrating our entire portfolio to NAIS (GCP). For some applications this is
+    nearly effortless, but for others problems arise. One large application is a legacy system that has been querying
+    another system directly via Oracle schema access.
+</p>
+
+<p>This created several problems:</p>
+<ul>
+    <li>On NAIS with Postgres, this is strictly forbidden.</li>
+    <li>Our application is heavily dependent on Oracle logic and complex views that join multiple schemas.</li>
+    <li>Because we use direct database access, we also have no clean API against the external systems.</li>
+</ul>
+
+<h2>No clean API against dependency</h2>
+<pre class="ascii">
+     [ OUR APP ]
+          ||
+          VV
+   [ THEIR DATABASE ]
+          ||
+          XX   (no contract / no guarantees)
+          ||
+   [ MICROSERVICES SPLIT ]
+</pre>
+<p>
+    Since we go directly into their database and pull what we need, they have no promises to keep towards us. Now that
+    they are migrating to a new database and splitting their application into multiple microservices, we have
+    essentially lost a vital integration. Without it, our application simply can't function.
+</p>
+
+<p>
+    The application was already not in good shape. No Spring, server-side HTML generation. Total rewrites were
+    discussed, but the application is huge: 200+ Jasper reports and thousands of Java classes.
+</p>
+
+<p>
+    Then came the idea of identifying exactly what we need. I spent a day running regex searches through Jasper files
+    and broken Hibernate entities, identifying thirteen tables we absolutely had to have.
+</p>
+
+<p>
+    I arranged a meeting with the tech lead of the other team, and we agreed to move forward with an ETL system. Their
+    system already exports data nightly to BigQuery, and this became our savior. Aside from a few issues where relations
+    had gone from 1:1 to 1:n, we found most of the data we needed available.
+</p>
+
+<p>
+    The other team agreed to create views for exactly what we needed, as long as I specified the requirements, and we
+    started converting. However, not everything was in BigQuery yet. Some data was still in Oracle, and one piece was
+    completely gone. Luckily, that was public data (postal codes), so I decided to import it via Java every night from
+    Bring.no.
+</p>
+
+<h2>Deadline approaching</h2>
+<p>
+    We were less than two months away from going live, and the Oracle data would still be available until summer. I
+    started by writing the application to move data from on-prem into NAIS. I quickly had a working prototype, using AI
+    tools to accelerate the initial iterations. It looked like an application that would be less than ten classes.
+</p>
+
+<p>
+    Things worked fine locally against H2. They also worked when moving data from table X to table Y on the same Oracle
+    instance, even using different connections.
+</p>
+
+<p>
+    Then we started testing. First, it turned out I couldn't actually hot-swap my tables. A materialized view
+    referencing them prevented renaming. ChatGPT suggested dropping the logs of the table. The prototype failed; they
+    were recreated the moment I deleted them.
+</p>
+
+<p>
+    Next, Grok wanted a go. It suggested deleting the materialized view temporarily, since it would need a full rebuild
+    anyway. That prototype also failed. The logs are not cleared even if you drop the MV.
+</p>
+
+<p>
+    At first, I considered merging their solutions. Then I asked both why we couldn't just use a regular table to
+    replace the materialized view, since we know exactly when to rebuild it anyway, and rebuilding outside the sync
+    window is pointless. They agreed that it should work in theory.
+</p>
+
+<p>
+    Eventually things worked, and we had readable code. My 10-class prototype had become 50+ classes, with JDBC locks,
+    retry features, retention systems, health checks, and around 20 <a href="Lbr_postnr.html">YAML configs</a>.
+</p>
+
+<h2>BigQuery and JDBC</h2>
+<p>
+    Since we had agreed with the other teams on a contract matching the Oracle structure, I assumed adding BigQuery
+    support would take a few hours. It did not.
+</p>
+
+<p>
+    ChatGPT initially refused to even attempt JDBC, claiming everyone uses the REST client. I pushed back, saying we
+    already had working code and just needed to switch the driver and connection string. It agreed, but insisted I build
+    a shaded JDBC jar. Grok, on the other hand, claimed one already existed.
+</p>
+<pre class="ascii">
+        ChatGPT                   Grok
+     +------------+          +------------+
+     | "SHADED!!" | <=====>  | "Dumb!"    |
+     | "BUILD!!"  |  argue   |"Google did"|
+     +-----+------+          +------+-----+
+</pre>
+<p>
+    The tools disagreed, which was useful. It forced me to validate assumptions
+    and check with an architect. The turning point was questioning the recommendation itself: why would a
+    custom shaded driver be more stable than Google's maintained one? That line of reasoning led to the final decision.
+</p>
+
+<pre class="ascii">
+&lt;dependency&gt;
+    &lt;groupId&gt;com.google.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;google-cloud-bigquery-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;0.3.0&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+
+<h2>BigQuery isn't SQL</h2>
+<p>
+    One of the strengths of AI is how much it improves learning by doing. It would have taken me ages to figure out the
+    quirks of the BigQuery JDBC driver without AI assistance.
+</p>
+
+<p>
+    Simple things differ. Fully qualified names are not the same. Google adds another layer: I can’t just say schema and
+    table. I have to use project.schema.table.column, and it must be `quoted`.
+</p>
+
+<p>
+    I’m sure all of this is documented somewhere, but luckily I didn’t have to read 20 pages to find <a
+        href="BigQueryDialect.html">the parts I actually needed</a>. AI provided the answers directly.
+</p>
+
+<p>
+    At the time of writing, things finally seem to be working, and the applications are running as expected. Hopefully I
+    won’t need to add another chapter to this story after the Easter holidays.
+</p>
+
+</body>
+</html>

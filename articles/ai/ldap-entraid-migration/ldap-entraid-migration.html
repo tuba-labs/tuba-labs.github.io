@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/content.css">
+    <script src="/app.js"></script>
+
+    <title>Generative Coding</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="contentPage">
+
+<h1>Lessons from an LDAP to Entra ID Migration</h1>
+<small>2026-02-01</small><br/>
+<br/>
+<small><b>Attachments:</b></small><br/>
+<small><a href="Java-instructions.html">Java instructions</a></small><br/>
+
+<p>
+    As a developer, I have often been fortunate enough to work on greenfield projects. At the end of 2025, I was tasked
+    with migrating the user system for my customer from <a href="https://ldap.com/" target="_blank">LDAP</a> to
+    <a href="https://www.microsoft.com/nb-no/security/business/identity-access/microsoft-entra-id" target="_blank">
+        Microsoft Entra ID</a>. The task was scoped to be minimal: keep existing interfaces,
+    keep the existing frontend, and only change reads and writes from LDAP to Entra ID.
+</p>
+
+<p>
+    At first, it seemed possible. AI could almost perform a one-to-one replacement of the LDAP service with one for Entra ID.
+    However, the structured IDs in LDAP quickly became an issue. The frontend,
+    controllers, and services relied on substring operations on IDs to determine relationships and hierarchy.
+    This approach does not work with Microsoft’s model, where IDs do not encode data.
+</p>
+
+<p>
+    After spending a week trying to make it work, I decided to start from scratch. I spoke to the product
+    owner and explained why this was a much larger task than initially assumed. With the help of ChatGPT,
+    I was able to clearly communicate the problem. LDAP contains many implicit assumptions in its data model that simply do not
+    map to Entra ID.
+</p>
+
+<p>
+    In the end, I implemented a snapshot of Entra ID and provided lookup mechanisms to reconstruct inheritance and hierarchy.
+    This allowed most of the frontend to be reused, along with many of the existing services, requiring only minor changes.
+</p>
+
+<p>
+    I wrote this to remind myself—and to show others—that AI can help with many kinds of problems.
+</p>
+
+
+<h2>Before Coding:</h2>
+
+<p>
+    In cases like this, the first step is often helping the customer or product owner understand what they actually want.
+    They usually have a clear idea of what the system should do, but not the cost or complexity behind each requirement.
+    AI can assist both as an active participant in discussions and by suggesting abstractions that are understandable
+    to both developers and domain experts.
+</p>
+
+<h2>Research and Prototyping:</h2>
+
+<p>
+    One of AI’s strengths is how much it improves learning by doing. I had limited experience with LDAP and had never
+    worked with Entra ID before. With AI assistance, I was able to understand its limitations and capabilities, and
+    prototype solutions in minutes that would normally take days.
+</p>
+
+<p>
+    AI allows you to query common problems that others have already encountered and receive concrete suggestions for solving them.
+    Used this way, it significantly reduces the learning curve.
+</p>
+
+<p>
+    You can rapidly build and deploy experimental branches, learn what works and what doesn’t, and then discard them.
+    It is not uncommon to throw away thousands of lines of code in a day after gaining a better understanding.
+    AI makes it easier to avoid <a href="https://en.wikipedia.org/wiki/Sunk_cost" target="_blank">sunk cost</a>,
+    since the initial investment in a prototype is low. This encourages discarding mediocre solutions and rebuilding properly.
+</p>
+
+
+<h2>Iterative Design:</h2>
+
+<pre class="ascii">
++-----------------+       +-----------------+
+|    ChatGPT      |       |      Grok       |
+| "ORACLE PIVOT"  | <---> |"Eww no, please!"|
++--------+--------+       +--------+--------+
+         |                         |
+        / \                       / \
+       /   \                     /   \
+</pre>
+
+<p>
+    When using AI, it is important to work iteratively. Avoid asking it to solve large, complex problems all at once.
+    Instead, focus on a single concern at a time with as narrow a definition of done as possible.
+</p>
+
+<p>
+    Once a solution is proposed, challenge it. Ask the AI to identify weaknesses, and have other models critique it as well.
+    When only trade-offs remain—and no clear faults—you can be reasonably confident that the problem is well understood and addressed.
+</p>
+
+<p>
+    Since this experience, my typical process is to start with ChatGPT, then use Grok or Claude to critique and stress-test the result.
+    When they stop finding issues, I review the solution myself and add my own critiques. In this way,
+    the process evolves from a rough initial implementation—often containing typical AI mistakes—into something more robust.
+</p>
+
+<p>
+    I used AI to generate this page, but by the end, nearly every line had been revised manually.
+    It still saved time.
+</p>
+
+<h2>It's Not Always Greenfield:</h2>
+
+<p>
+    I have also spent considerable time maintaining legacy systems. AI is useful here as well.
+    It can quickly explain what thousands of lines of poorly written code are doing, suggest improvements,
+    and often pinpoint the source of bugs—especially when given context about incorrect behaviour.
+</p>
+
+<p>
+    In one recent project, we had almost no useful logging, making it difficult to understand what was going wrong.
+    A stack trace eventually appeared, pointing to a common "runJob" entry point, but without enough detail to identify
+    which job (among many) caused the issue. I used AI to scan the codebase and add logging and MDC where appropriate,
+    allowing us to trace the problem back to invalid input in an XML definition.
+</p>
+
+<p>
+    AI can also generate tests for older systems where proper test coverage is lacking. While auto-generated tests are not perfect,
+    they are far better than having none, and they can save both developers and testers significant time.
+</p>
+
+</body>
+</html>

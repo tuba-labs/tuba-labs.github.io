@@ -52,7 +52,7 @@ a[href^="http"]::after {
 }
 
 /* Download links */
-a[href$=".pdf"]::after {
+a[href$=".pdf"]::before {
     content: " 📄";
     font-size: 0.8em;
     opacity: 0.7;

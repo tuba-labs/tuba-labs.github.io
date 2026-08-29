@@ -1,6 +1,9 @@
 .contentPage {
     padding: 20px;
     max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
 }
 
 .meta {
@@ -11,4 +14,14 @@
 pre {
     overflow-x: auto;
     white-space: pre;
+}
+
+.buzzword-experience {
+    color: var(--text-dim);
+    font-size: 0.85em;
+}
+
+.buzzword-experience a {
+    background: none;
+    color: var(--text-dim);
 }

@@ -85,6 +85,34 @@ a[href$=".pdf"]::before {
     overflow-y: auto;
 }
 
+#menuToggle {
+    display: none;
+    width: 100%;
+    padding: 5px 6px;
+    margin: 0 0 10px 0;
+    box-sizing: border-box;
+    background: var(--bg-main);
+    color: var(--text-dim);
+    border: 1px solid var(--border-input);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+#menuToggle:hover {
+    background: var(--bg-hover);
+    color: var(--text-highlight);
+}
+
+#menuToggle::after {
+    content: "+";
+    float: right;
+}
+
+#menu.menu-expanded #menuToggle::after {
+    content: "-";
+}
+
 /* Filter input */
 #filter {
     width: 100%;
@@ -132,6 +160,9 @@ a[href$=".pdf"]::before {
 .contentPage {
     padding: 20px;
     max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
 }
 
 /* Layout blocks */
@@ -190,12 +221,30 @@ a[href$=".pdf"]::before {
 
     #app {
         flex-direction: column;
+        height: 100dvh;
+        min-height: 0;
     }
 
     #menu {
         width: 100%;
+        max-height: 60dvh;
         border-right: none;
         border-bottom: 1px solid var(--border-main);
+        overflow-y: auto;
+        flex: 0 0 auto;
+    }
+
+    #menuToggle {
+        display: block;
+    }
+
+    #menu.menu-collapsed {
+        max-height: none;
+    }
+
+    #menu.menu-collapsed #filter,
+    #menu.menu-collapsed #pages {
+        display: none;
     }
 
     #pages a {
@@ -208,7 +257,9 @@ a[href$=".pdf"]::before {
 
     #view {
         width: 100%;
-        height: calc(100vh - 160px);
+        height: auto;
+        min-height: 0;
+        flex: 1 1 auto;
     }
 
     .profile {

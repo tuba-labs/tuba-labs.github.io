@@ -10,17 +10,25 @@
 </head>
 <body>
 <div id="app">
-    <nav id="menu">
+    <nav id="menu" class="menu-collapsed">
+        <button id="menuToggle" type="button" aria-expanded="false" aria-controls="filter pages">Menu</button>
         <input id="filter" type="text" placeholder="Filter pages...">
         <div id="pages">
             <p><a href="#home">Home</a></p>
             <p><a href="#contact">Contact</a></p>
             <p><a href="#buzzwords">Buzzwords</a></p>
+            <p>Work Experience:</p>
+            <p><a href="#work-lbr-modernization">Landbruksdirektoratet</a></p>
+            <p><a href="#work-fifty-statnett-svk">Fifty AS</a></p>
+            <p><a href="#work-skatteetaten">Skatteetaten</a></p>
+            <p><a href="#work-police-ict">Politiets IKT-tjenester</a></p>
+            <p><a href="#work-zirius-erp">Zirius AS</a></p>
             <p>Using AI to solve problems:</p>
             <p><a href="#bigquery">BigQuery ETL Migration</a></p>
             <p><a href="#ai-coding">LDAP to Entra ID Migration</a></p>
             <p>Other:</p>
             <p><a href="#mdc-demo">MDC Demo</a></p>
+            <p><a href="https://github.com/tuba-labs/nais-devops" target="_blank" rel="noopener noreferrer">NAIS DevOps</a></p>
         </div>
     </nav>
 
@@ -32,11 +40,19 @@
     const entries = Array.from(document.querySelectorAll('#pages p'));
     const links = Array.from(document.querySelectorAll('#pages a'));
     const iframe = document.getElementById('view');
+    const menu = document.getElementById('menu');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenuQuery = window.matchMedia('(max-width: 700px)');
 
     const routes = {
         "home": "home/home.html",
         "contact": "contact/contact.html",
         "buzzwords": "buzzwords/buzzwords.html",
+        "work-lbr-modernization": "work-history/landbruksdirektoratet-gcp.html",
+        "work-fifty-statnett-svk": "work-history/nordic-balancing-systems.html",
+        "work-skatteetaten": "work-history/skatteetaten-sanctions.html",
+        "work-police-ict": "work-history/police-operational-systems.html",
+        "work-zirius-erp": "work-history/zirius-erp.html",
         "bigquery": "articles/ai/bigquery-etl/bigquery-etl.html",
         "ai-coding": "articles/ai/ldap-entraid-migration/ldap-entraid-migration.html",
         "mdc-demo": "articles/general/mdc-demo/mdc-demo.html"
@@ -52,11 +68,29 @@
         if (active) active.classList.add('active');
     }
 
+    function setMenuExpanded(expanded) {
+        menu.classList.toggle('menu-expanded', expanded);
+        menu.classList.toggle('menu-collapsed', !expanded);
+        menuToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
+
+    menuToggle.addEventListener('click', function () {
+        setMenuExpanded(!menu.classList.contains('menu-expanded'));
+    });
+
     // Handle clicks → update URL
     links.forEach(link => {
         link.addEventListener('click', function (e) {
+            const href = link.getAttribute('href');
+            if (!href.startsWith('#')) {
+                return;
+            }
+
             e.preventDefault();
-            location.hash = link.getAttribute('href');
+            location.hash = href;
+            if (mobileMenuQuery.matches) {
+                setMenuExpanded(false);
+            }
         });
     });
 

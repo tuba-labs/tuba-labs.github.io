@@ -1,3 +1,5 @@
+@import url("./background.css");
+
 :root {
     /* Colors */
     --bg-main: #111;
@@ -8,7 +10,11 @@
 
     --text-main: #eee;
     --text-dim: #ccc;
+    --text-muted: #ccc;
     --text-highlight: #cfe6ff;
+    --ambient-dot-color: rgba(112, 255, 196, 0.22);
+    --ambient-dot-accent-color: rgba(111, 162, 255, 0.16);
+    --ambient-dot-glow: rgba(112, 255, 196, 0.12);
 
     --border-main: #444;
     --border-input: #555;

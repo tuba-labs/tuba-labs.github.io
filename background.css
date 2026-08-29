@@ -1,0 +1,16 @@
+.ambient-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+body > :not(dialog):not(.ambient-background) {
+    position: relative;
+    z-index: 1;
+}

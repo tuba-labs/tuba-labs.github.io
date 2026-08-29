@@ -72,10 +72,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const availableTextWidth = availableWidth - horizontalSpacing;
 
             if (availableTextWidth <= 0) return;
-            if (textWidth <= availableTextWidth) return;
+            if (textWidth <= availableTextWidth) {
+                block.style.overflowX = "hidden";
+                return;
+            }
 
-            const scale = availableTextWidth / textWidth;
+            const scale = Math.max(availableTextWidth - 2, 1) / textWidth;
             block.style.fontSize = `${baseFontSize * scale}px`;
+            block.style.overflowX = "hidden";
         });
     };
 

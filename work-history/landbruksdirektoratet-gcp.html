@@ -14,7 +14,7 @@
 <body class="contentPage">
 
 <h1>Landbruksdirektoratet: Modernization and Migration</h1>
-<small><b>Senior Developer</b></small><br/>
+<small><b>Senior Developer</b></small><br/> <small>Nov 2025 - ongoing</small><br/>
 <small>Nov 2025 - ongoing</small><br/>
 
 
@@ -26,27 +26,41 @@
    (o)(o)------''._.'     (O)
 </pre>
 
-<p>
-    Modernization and migration of central services from older Altinn, LDAP and Oracle based solutions to a modern
+<p> Modernization and migration of central services from older Altinn, LDAP and Oracle based solutions to a modern
     platform on NAIS and Google Cloud Platform. The work covered integrations, data migration, identity management and
-    new services, with a strong focus on preserving compatibility with existing systems and avoiding unnecessary rewrites.
-</p>
+    new services, with significant technical ownership of migration strategy, performance improvements and integration
+    design, while preserving compatibility with existing systems and avoiding unnecessary rewrites. </p>
+
+<p> Modernization and migration of central services from older Altinn, LDAP and Oracle based solutions to a modern
+    platform on NAIS and Google Cloud Platform. The work covered integrations, data migration, identity management and
+    new services, with significant technical ownership of migration strategy, performance improvements and integration
+    design, while preserving compatibility with existing systems and avoiding unnecessary rewrites. </p>
 
 <ul>
+    <li>Took technical ownership of several modernization and migration initiatives across identity management, data
+        integration and backend services.
+    </li>
     <li>Designed and implemented the migration from LDAP to Microsoft Entra ID.</li>
-    <li>Replaced legacy REST services and adapted authentication and user-management flows.</li>
+    <li>Redesigned identity lookup to use synchronized snapshots and in-memory lookups instead of performing external
+        LDAP calls during requests, removing identity-service latency from the request path.
+    </li>
+    <li>Replaced legacy REST services and adapted authentication and user-management flows to the new identity
+        architecture.
+    </li>
+    <li>Resolved a blocking ETL and data-migration problem and designed the resulting solution using BigQuery, Oracle
+        and PostgreSQL.
+    </li>
+    <li>Built the ETL solution to replace direct database integrations and support the transition from Oracle-based
+        systems to PostgreSQL on NAIS/GCP.
+    </li>
     <li>Designed a new data intake solution for actors such as Tine, replacing an Altinn/SFTP integration.</li>
     <li>Used ID-porten for authentication and Google Cloud Storage for secure file and data intake.</li>
-    <li>Built an ETL solution with BigQuery, Oracle and PostgreSQL to replace direct database integrations.</li>
-    <li>Migrated data from Oracle to PostgreSQL as part of the NAIS/GCP transition.</li>
     <li>Developed conversion scripts and upgraded close to one hundred JasperReports reports to the new data model.</li>
 </ul>
 
 <h2>Technology</h2>
-<p>
-    Java, Spring Boot, GCP, NAIS, BigQuery, PostgreSQL, Oracle, Entra ID, LDAP, ID-porten, Altinn, REST, XML, Grafana
-    and JSON.
-</p>
+<p> Java, Spring Boot, GCP, NAIS, BigQuery, PostgreSQL, Oracle, Entra ID, LDAP, ID-porten, Altinn, REST, Google Cloud
+    Storage, XML, Grafana and JSON. </p>
 
 <h2>Related writing</h2>
 <ul>

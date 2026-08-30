@@ -14,7 +14,7 @@
 <body class="contentPage">
 
 <h1>Skatteetaten: Modernization and tax code adjustments</h1>
-<small><b>Senior Developer</b></small><br/>
+<small><b>Senior Developer — Technical Lead Responsibilities</b></small><br/>
 <small>Sep 2020 - Dec 2023</small><br/>
 
 
@@ -81,24 +81,28 @@
 <p>
     Development and modernization of Skatteetaten systems for automated follow-up and sanctions when businesses failed
     to report, or reported late. The systems supported rule-driven case handling, control, coercive fines and other
-    sanctions across several business areas.
+    sanctions across several business areas. The work included significant technical ownership of backend architecture,
+    modernization, messaging patterns and testing practices across multiple subprojects.
 </p>
 
 <ul>
-    <li>Had main responsibility for backend development in several subprojects.</li>
+    <li>Took technical ownership of backend architecture and modernization decisions across several subprojects.</li>
+    <li>Identified where asynchronous message-based processing was a better fit than existing Camel-based flows and drove the redesign of several services to use the platform-provided ActiveMQ service.</li>
+    <li>Designed and implemented a PostgreSQL-backed queueing mechanism for workflows where ActiveMQ was not a good fit.</li>
+    <li>Changed the testing approach from primarily frontend-driven testing to direct testing of backend functionality through REST APIs, improving isolation, repeatability and testability.</li>
     <li>Designed and implemented rule-driven services, REST APIs, event-driven processing and integrations.</li>
-    <li>Modernized older systems from Java 8, Akka, Oracle, WebSphere and proprietary frameworks.</li>
-    <li>Moved services toward Java 17/21, Spring Boot, PostgreSQL, Docker and OpenShift/Kubernetes.</li>
-    <li>Established reusable development patterns and service components.</li>
+    <li>Modernized older systems from Java 8, Akka, Oracle, WebSphere and proprietary frameworks toward Java 17/21, Spring Boot, PostgreSQL, Docker and OpenShift/Kubernetes.</li>
+    <li>Established reusable development patterns and shared service components across multiple services.</li>
     <li>Implemented integrations with Altinn and internal Skatteetaten registers.</li>
-    <li>Built message-based processing with ActiveMQ and features for automated case handling and complaint handling.</li>
+    <li>Developed automated case-handling and complaint-handling workflows using message-based processing.</li>
 </ul>
 
 <h2>Technology</h2>
 <p>
-    Java, Spring Boot, PostgreSQL, Oracle, OpenShift, Kubernetes, Docker, REST, ActiveMQ, Altinn, JWT, XML, JSON, SOAP,
-    Spring REST Docs, TDD, Testcontainers and Apache Camel.
+    Java, Spring Boot, PostgreSQL, Oracle, OpenShift, Kubernetes, Docker, REST, ActiveMQ, Apache Camel, Altinn, JWT,
+    XML, JSON, SOAP, Spring REST Docs, TDD and Testcontainers.
 </p>
+
 
 </body>
 </html>

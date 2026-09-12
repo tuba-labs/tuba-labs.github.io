@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/content.css">
+    <script src="/app.js"></script>
+    <script src="/ambient-dots.js" defer></script>
+
+    <title>Writers Workbench</title>
+    <link rel="icon" href="/favicon-32.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="contentPage">
+
+<h1>Writers Workbench</h1>
+<small>IntelliJ plugin for writing-heavy projects</small><br/>
+<small><a href="https://github.com/tuba-labs/intellij-idea-writers-tools" target="_blank" rel="noopener noreferrer">GitHub repository</a></small><br/>
+
+<pre class="ascii">
++---------------------- INTELLIJ -----------------------+
+| chapter-12.md                              1842 words |
+|                                                       |
+| The rain had stopped, but the city had not.           |
+|                                                       |
+| right click: Writers Workbench                        |
+|                                                       |
+|   Count Words                                         |
+|   AI Prompts                                          |
+|   Insert Variable                                     |
++-----------------------------+-------------------------+
+                              |
+                              v
+                +-----------------------------+
+                | prompt template             |
+                |-----------------------------|
+                | {{import:Book Context}}     |
+                | {{selection}}               |
+                | {{projectName}}             |
+                +-----------------------------+
+</pre>
+
+<p>
+    Writers Workbench is a JetBrains IDE plugin for people who keep prose, documentation, notes,
+    Markdown, comments, and planning files next to their code.
+</p>
+
+<p>
+    It started with a simple need: count words without leaving the editor. From there it grew into
+    a small writing workbench for projects where text files are part of the actual work.
+</p>
+
+<h2>Word Count</h2>
+<ul>
+    <li>Live word count for the active editor in the status bar.</li>
+    <li>Selection-aware counting when text is selected.</li>
+    <li>Project view action for counting words across selected files and folders.</li>
+    <li>Summary metrics for words, paragraphs, lines, characters, averages and file counts.</li>
+    <li>Per-file charts for the largest files by word count.</li>
+    <li>Skipped and unreadable file reporting, so the result is explainable.</li>
+</ul>
+
+<pre class="ascii">
+ selected folder
+      |
+      v
+ +------------------+
+ | count words      |
+ |------------------|
+ | words     128344 |
+ | files        173 |
+ | skipped       12 |
+ | unreadable     0 |
+ +------------------+
+</pre>
+
+<h2>AI Prompt Templates</h2>
+<p>
+    Prompt templates are Markdown files in a project folder. They can be run against selected editor
+    text or selected Project view files, then copied into whatever AI tool you prefer.
+</p>
+
+<ul>
+    <li>Default templates for prose improvement, scene diagnosis, continuity checks and chapter summaries.</li>
+    <li>Character sheets, timelines, world facts, revision goals and chapter meta-file update prompts.</li>
+    <li>Variables for selections, line numbers, file paths, folder paths and project name.</li>
+    <li>Template imports with <code>{{import:Template Name}}</code>.</li>
+    <li>Reusable user input variables for values that should be asked once and inserted many times.</li>
+    <li>Prompt-template context menu for inserting variables and choosing template imports from a dropdown.</li>
+</ul>
+
+<pre class="ascii">
+ writers_workbench/
+   prompts/
+     Book Project Context.md
+     Chapter Summary.md
+     Improve Prose.md
+          |
+          v
+     {{selection}} + {{projectName}} + imports
+          |
+          v
+     copied prompt
+</pre>
+
+<h2>Settings</h2>
+<p>
+    The plugin has project settings for word-count limits, AI prompt limits, excluded file extensions
+    and the Writers Workbench folder. The idea is to keep it useful for small notes and large manuscript
+    projects without accidentally reading generated files, build outputs or large binaries.
+</p>
+
+<p>
+    It is built as a split-mode-ready IntelliJ plugin, with UI code separated from backend project logic.
+    That matters for remote development, but the user-facing goal is simple: keep writing tools close to
+    the text.
+</p>
+
+</body>
+</html>
